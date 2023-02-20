@@ -11,11 +11,13 @@ use App\Models\InputAspirasi;
 class AspirasiController extends Controller
 {
     public function create() {
+        
         $aspirasi = Aspirasi::latest();
         $urut = $aspirasi->max('id');
         return view('formAspirasi', [
             'title' => ' Pengisian Formulir Keluhan',
             'kategori' => Kategori::all(),
+            'aspirasi' => $aspirasi->filter(request(['search']))->get(),
             'noUrut' => abs($urut + 1)
         ]);
     }

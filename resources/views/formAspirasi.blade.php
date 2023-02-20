@@ -50,5 +50,35 @@
                 <button type="submit" class="btn btn-lg btn-success w-100">Kirim!</button>
             </div>
         </form>
+
+    </div>
+    {{-- Pencarian Pengaduan --}}
+    <div class="container mt-4 border-top border-3">
+        <h2 class="text-center mt-2"><u>Cari Laporan</u></h2>
+        <form action="formAspirasi" method="GET" class="d-flex mt-4" style="margin-left: 25%" role="search">
+            @csrf
+            <input class="form-control me-1 w-50" type="search" placeholder="Cari berdasarkan Nomor Laporan" aria-label="Search" name="search" value="{{ request('search') }}">
+            <button class="btn btn-outline-success" type="submit">Search</button>
+        </form><br>
+        <div class="container me-auto bg-body-secondary w-75 rounded-2 p-2 border border-4">
+            @if (request('search') != null)
+            @foreach ($aspirasi as $asp)
+            @php
+                if ($asp->status == 'Menunggu') {
+                    $test = 'primary';
+                } else if ($asp->status == 'Proses') {
+                    $test = 'warning';
+                }else {
+                    $test = 'success';
+                }
+                
+            @endphp
+                <p class="fs-4 p-0 mb-2">Nomor Pengaduan : {{ $asp->id_aspirasi }}</p>
+                <p class="fs-4 p-0 mb-2">Status : <span class="badge text-bg-{{ $test }}">{{ $asp->status }}</span></p>
+                <p class="fs-4 p-0 mb-2">Kategori : {{ $asp->kategori->kategori }}</p>
+                <p class="fs-4 p-0 mb-2">Isi Laporan : {{ $asp->input_aspirasi->keterangan }}</p>
+              @endforeach
+          @endif
+        </div><br><br><br>
     </div>
 @endsection
